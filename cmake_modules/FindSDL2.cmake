@@ -7,9 +7,9 @@
 
     # Support both 32 and 64 bit builds
     if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
-        string(APPEND SDL2_LIBRARIES ";${COMP_DIR}/lib/x64/SDL2_${comp}.lib")
+        string(APPEND SDL2_LIBRARIES ";${COMP_DIR}/lib/x64/SDL2_${comp}.dll")
     else ()
-        string(APPEND SDL2_LIBRARIES ";${COMP_DIR}/lib/x86/SDL2_${comp}.lib")
+        string(APPEND SDL2_LIBRARIES ";${COMP_DIR}/lib/x86/SDL2_${comp}.dll")
     endif ()
     
     set(SDL2_LIBRARIES ${SDL2_LIBRARIES} PARENT_SCOPE)
@@ -19,9 +19,9 @@ set(SDL2_INCLUDE_DIRS "${SDL2_DIR}/include")
 
 # Support both 32 and 64 bit builds
 if (${CMAKE_SIZEOF_VOID_P} MATCHES 8)
-    set(SDL2_LIBRARIES "${SDL2_DIR}/lib/x64/SDL2.lib;${SDL2_DIR}/lib/x64/SDL2main.lib")
+    set(SDL2_LIBRARIES "${SDL2_DIR}/lib/x64/SDL2.dll")
 else ()
-    set(SDL2_LIBRARIES "${SDL2_DIR}/lib/x86/SDL2.lib;${SDL2_DIR}/lib/x86/SDL2main.lib")
+    set(SDL2_LIBRARIES "${SDL2_DIR}/lib/x86/SDL2.dll")
 endif ()
 
 foreach(comp ${SDL2_FIND_COMPONENTS})

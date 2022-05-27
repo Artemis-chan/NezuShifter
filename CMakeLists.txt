@@ -26,3 +26,5 @@ target_include_directories(manymouse PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOUR
 add_executable(shifter_emu main.c)
 
 target_link_libraries(shifter_emu PRIVATE manymouse ${SDL2_LIBRARIES})
+
+file(INSTALL ${SDL2_LIBRARIES} DESTINATION .)
