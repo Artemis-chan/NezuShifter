@@ -7,11 +7,13 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules)
 
 #SDL2
-set(SDL2_VERSION 2.0.22)
-set(SDL2_ttf_VERSION 2.0.18)
-include(Download)
-download(https://github.com/libsdl-org/SDL/releases/download/release-${SDL2_VERSION}/SDL2-devel-${SDL2_VERSION}-VC.zip SDL2)
-download(https://github.com/libsdl-org/SDL_ttf/releases/download/release-${SDL2_ttf_VERSION}/SDL2_ttf-devel-${SDL2_ttf_VERSION}-VC.zip SDL2_ttf)
+if (WIN32)
+    set(SDL2_VERSION 2.0.22)
+    set(SDL2_ttf_VERSION 2.0.18)
+    include(Download)
+    download(https://github.com/libsdl-org/SDL/releases/download/release-${SDL2_VERSION}/SDL2-devel-${SDL2_VERSION}-VC.zip SDL2)
+    download(https://github.com/libsdl-org/SDL_ttf/releases/download/release-${SDL2_ttf_VERSION}/SDL2_ttf-devel-${SDL2_ttf_VERSION}-VC.zip SDL2_ttf)    
+endif ()
 
 find_package(SDL2 REQUIRED ttf)
 include_directories(${SDL2_INCLUDE_DIRS} ${CMAKE_BINARY_DIR})
@@ -25,6 +27,11 @@ target_include_directories(manymouse PUBLIC ${PROJECT_BINARY_DIR} ${PROJECT_SOUR
 
 add_executable(shifter_emu main.c)
 
-target_link_libraries(shifter_emu PRIVATE manymouse ${SDL2_LIBRARIES})
+if(WIN32)
+    target_link_libraries(shifter_emu PRIVATE manymouse ${SDL2_LIBRARIES})
+    file(INSTALL ${SDL2_LIBRARIES} DESTINATION .)
+else()
+    target_link_libraries(shifter_emu PRIVATE manymouse SDL2 SDL2_ttf)
+endif()
+    
 
-file(INSTALL ${SDL2_LIBRARIES} DESTINATION .)
