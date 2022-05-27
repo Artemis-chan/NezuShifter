@@ -4,6 +4,7 @@
 
 #define SDL_MAIN_HANDLED
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 int main(int argc, char *argv[]) {
     printf("Hello, World: %i\n", ManyMouse_Init());
@@ -21,9 +22,12 @@ int main(int argc, char *argv[]) {
     );
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_SetRenderDrawColor(renderer, 0, 50, 0, SDL_ALPHA_TRANSPARENT);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
+
+    TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
+    TTF_CloseFont(font);
 
     SDL_Delay(3000);
 
