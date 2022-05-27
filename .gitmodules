@@ -1,3 +1,6 @@
 [submodule "manymouse"]
 	path = manymouse
 	url = https://github.com/icculus/manymouse
+[submodule "SDL"]
+	path = SDL
+	url = https://github.com/libsdl-org/SDL
