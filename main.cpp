@@ -6,20 +6,18 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <ViGEm/Client.h>
-#include <xinput.h>
-
 #include "manymouse/manymouse.h"
-
-#pragma comment(lib, "setupapi.lib")
+#include "controller_emu.h"
 
 int main(int argc, char *argv[]) {
     printf("Hello, World: %i\n", ManyMouse_Init());
     ManyMouse_Quit();
     
     SDL_Init(SDL_INIT_VIDEO);
+    
+    controller_emu_set_input(0, 0);
+    controller_emu_init();
+    controller_emu_set_input(0, 0);
 
     SDL_Window *window = SDL_CreateWindow(
             "SDL2Test",
@@ -37,51 +35,13 @@ int main(int argc, char *argv[]) {
 
     TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
     TTF_CloseFont(font);
-
-    //VIGEM
-    printf("starting vigem\n");
-    const auto client = vigem_alloc();
-
-    if (client == NULL)
-    {
-        return -1;
-    }
-    const auto retval = vigem_connect(client);
-
-    if (!VIGEM_SUCCESS(retval))
-    {        
-        return -1;
-    }
-    //
-    // Allocate handle to identify new pad
-    //
-        const auto pad = vigem_target_x360_alloc();
-    
-    //
-    // Add client to the bus, this equals a plug-in event
-    //
-    const auto pir = vigem_target_add(client, pad);
-    if (!VIGEM_SUCCESS(pir))
-    {
-        return -1;
-    }
-    XINPUT_STATE state;
-    XInputGetState(0, &state);
-
-
-    vigem_target_x360_update(client, pad, *(XUSB_REPORT*)(&state.Gamepad));
-
-
-    //VIGEM
     
     printf("wait\n");
     SDL_Delay(3000);
 
     printf("ending_vigem\n");
-    vigem_target_remove(client, pad);
-    vigem_target_free(pad);
-    vigem_disconnect(client);
-    vigem_free(client);
+    
+    controller_emu_quit();
 
     SDL_DestroyWindow(window);
     SDL_Quit();
