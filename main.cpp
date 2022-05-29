@@ -11,7 +11,6 @@
 
 int main(int argc, char *argv[]) {
     printf("Hello, World: %i\n", ManyMouse_Init());
-    ManyMouse_Quit();
     
     SDL_Init(SDL_INIT_VIDEO);
     
@@ -35,12 +34,54 @@ int main(int argc, char *argv[]) {
 
     TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
     TTF_CloseFont(font);
-    
-    printf("wait\n");
-    SDL_Delay(3000);
 
-    printf("ending_vigem\n");
+    // Event loop exit flag
+    bool quit = false;
+
+    // Event loop
+    while(!quit)
+    {
+        SDL_Event e;
+
+        // Wait indefinitely for the next available event
+        SDL_WaitEventTimeout(&e, 7);
+
+        // User requests quit
+        if(e.type == SDL_QUIT)
+        {
+            quit = true;
+        }
+
+        if (e.type == SDL_KEYUP) {
+            if (e.key.keysym.sym == SDLK_ESCAPE) {
+                quit = true;
+            }
+        }
+
+        ManyMouseEvent evt;
+        int x = 0, y = 0;
+
+        while (ManyMouse_PollEvent(&evt) != 0)
+        {
+            if (evt.type != MANYMOUSE_EVENT_RELMOTION)
+                continue;
+
+            switch (evt.item)
+            {
+                case 0:
+                    x = evt.value;
+                    break;
+                case 1:
+                    y = evt.value;
+                    break;
+            }
+        }
+
+        printf("%i %i\n", x, y);
+    }
     
+    //Disposal
+    ManyMouse_Quit();
     controller_emu_quit();
 
     SDL_DestroyWindow(window);
