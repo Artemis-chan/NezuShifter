@@ -4,10 +4,9 @@ project(shifter_emu CXX C)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 99)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules)
-
 #SDL2
 if(WIN32)
+    set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules)
     set(SDL2_VERSION 2.0.22)
     set(SDL2_ttf_VERSION 2.0.18)
     include(Download)
