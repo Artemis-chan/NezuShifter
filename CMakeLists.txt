@@ -37,7 +37,7 @@ if(WIN32)
 endif()
 
 if(WIN32)
-    add_executable(shifter_emu main.cpp controller_emu_win.cpp)
+    add_executable(shifter_emu main.cpp controller_emu/controller_emu_win.cpp)
     target_link_libraries(shifter_emu PUBLIC manymouse ${SDL2_LIBRARIES} ViGEmClient XInput setupapi)
     message(STATUS "Using ViGEmClient ${CMAKE_INSTALL_PREFIX}")
 #    install(TARGETS ViGEmClient DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

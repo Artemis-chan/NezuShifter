@@ -7,7 +7,7 @@
 #include <SDL_ttf.h>
 
 #include "manymouse/manymouse.h"
-#include "controller_emu.h"
+#include "controller_emu/controller_emu.h"
 
 int main(int argc, char *argv[]) {
     printf("Hello, World: %i\n", ManyMouse_Init());
