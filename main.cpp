@@ -14,9 +14,9 @@ int main(int argc, char *argv[]) {
     
     SDL_Init(SDL_INIT_VIDEO);
     
-    controller_emu_set_input(0, 0);
     controller_emu_init();
-    controller_emu_set_input(0, 0);
+    
+//    controller_emu_set_input(0, 0);
 
     SDL_Window *window = SDL_CreateWindow(
             "SDL2Test",
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
             SDL_WINDOWPOS_UNDEFINED,
             640,
             480,
-            SDL_WINDOW_BORDERLESS
+            SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALWAYS_ON_TOP
     );
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
@@ -44,17 +44,23 @@ int main(int argc, char *argv[]) {
         SDL_Event e;
 
         // Wait indefinitely for the next available event
-        SDL_WaitEventTimeout(&e, 7);
+        SDL_WaitEventTimeout(&e, 50);
 
         // User requests quit
         if(e.type == SDL_QUIT)
         {
             quit = true;
         }
+        
 
-        if (e.type == SDL_KEYUP) {
+        if (e.type == SDL_KEYDOWN) {
             if (e.key.keysym.sym == SDLK_ESCAPE) {
                 quit = true;
+            }
+            if (e.key.keysym.sym == SDLK_a)
+            {
+                printf("Button pressed\n");
+                controller_emu_set_input(0, 0);
             }
         }
 
@@ -77,7 +83,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        printf("%i %i\n", x, y);
+//        printf("%i %i\n", x, y);
     }
     
     //Disposal
