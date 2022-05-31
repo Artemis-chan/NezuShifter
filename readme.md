@@ -5,7 +5,7 @@
 ## TODO[75%]
 
 - [x] [Create working prototype in unity (which is easy to port into C/CXX)](https://github.com/Artemis-chan/ShifterEmuPrototype)
-- [x] Cross-platform Building workflow using CMake
+- [x] Cross-platform building workflow using CMake
 - [ ] Isolate files to install
 - [x] App loop
 - [x] Controller Emulation
