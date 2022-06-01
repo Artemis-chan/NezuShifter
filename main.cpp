@@ -9,6 +9,8 @@
 #include "manymouse/manymouse.h"
 #include "controller_emu/controller_emu.h"
 
+#include "Shifter.hpp"
+
 int main(int argc, char *argv[]) {
     //Init
     SDL_Init(SDL_INIT_VIDEO);    
@@ -31,17 +33,19 @@ int main(int argc, char *argv[]) {
 
     // Event loop exit flag
     bool quit = false;
+    
+    ShifterHandle handle;
 
     // Event loop
     while(!quit)
     {
-        SDL_SetRenderDrawColor(renderer, 0, 50, 0, SDL_ALPHA_TRANSPARENT);
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0x90, 0xAE, SDL_ALPHA_TRANSPARENT);
         SDL_RenderClear(renderer);
         
         SDL_Event e;
 
         // Wait indefinitely for the next available event
-        SDL_WaitEventTimeout(&e, 50);
+        SDL_WaitEventTimeout(&e, 1);
 
         // User requests quit
         if(e.type == SDL_QUIT)
@@ -79,9 +83,11 @@ int main(int argc, char *argv[]) {
                     break;
             }
         }
+        handle.move(x, y, window);
 
 //        printf("%i %i\n", x, y);
         //Render
+        handle.render(renderer);
 
         SDL_RenderPresent(renderer);
     }

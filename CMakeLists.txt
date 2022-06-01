@@ -1,7 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.20.2)
 project(NezuShifter CXX C)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 99)
 
 #SDL2
@@ -36,12 +36,12 @@ if(WIN32)
 endif()
 
 if(WIN32)
-    add_executable(NezuShifter main.cpp controller_emu/controller_emu_win.cpp)
+    add_executable(NezuShifter main.cpp controller_emu/controller_emu_win.cpp Shifter.cpp Shifter.hpp)
     target_link_libraries(NezuShifter PUBLIC manymouse ${SDL2_LIBRARIES} ViGEmClient XInput setupapi)
     message(STATUS "Using ViGEmClient ${CMAKE_INSTALL_PREFIX}")
 #    install(TARGETS ViGEmClient DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 #    file(INSTALL ${SDL2_LIBRARIES} DESTINATION .)
 else()
-    add_executable(NezuShifter main.cpp controller_emu/controller_emu_linux.cpp)
+    add_executable(NezuShifter main.cpp controller_emu/controller_emu_linux.cpp Shifter.cpp Shifter.hpp)
     target_link_libraries(NezuShifter PRIVATE manymouse SDL2 SDL2_ttf)
 endif()
