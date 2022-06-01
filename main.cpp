@@ -10,13 +10,10 @@
 #include "controller_emu/controller_emu.h"
 
 int main(int argc, char *argv[]) {
-    printf("Hello, World: %i\n", ManyMouse_Init());
-    
-    SDL_Init(SDL_INIT_VIDEO);
-    
+    //Init
+    SDL_Init(SDL_INIT_VIDEO);    
     controller_emu_init();
-    
-//    controller_emu_set_input(0, 0);
+    ManyMouse_Init();
 
     SDL_Window *window = SDL_CreateWindow(
             "SDL2Test",
@@ -28,9 +25,6 @@ int main(int argc, char *argv[]) {
     );
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    SDL_SetRenderDrawColor(renderer, 0, 50, 0, SDL_ALPHA_TRANSPARENT);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
 
     TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
     TTF_CloseFont(font);
@@ -41,6 +35,9 @@ int main(int argc, char *argv[]) {
     // Event loop
     while(!quit)
     {
+        SDL_SetRenderDrawColor(renderer, 0, 50, 0, SDL_ALPHA_TRANSPARENT);
+        SDL_RenderClear(renderer);
+        
         SDL_Event e;
 
         // Wait indefinitely for the next available event
@@ -84,6 +81,9 @@ int main(int argc, char *argv[]) {
         }
 
 //        printf("%i %i\n", x, y);
+        //Render
+
+        SDL_RenderPresent(renderer);
     }
     
     //Disposal

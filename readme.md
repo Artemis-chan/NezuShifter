@@ -1,4 +1,4 @@
-# NezuShifter
+﻿# NezuShifter
 
 **Emulating simracing shifters using your mouse!**
 
@@ -11,7 +11,7 @@
 - [x] Controller Emulation
   - [x] Windows
   - [x] Linux
-     - [ ] Cleanup
+    - [ ] Cleanup
 - [ ] Port logic from my unity prototype
   - [ ] Dynamic Grid Layout
   - [ ] Shifter
