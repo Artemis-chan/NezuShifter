@@ -1,4 +1,4 @@
-﻿# NezuShifter
+# NezuShifter
 
 **Emulating simracing shifters using your mouse!**
 
@@ -11,7 +11,7 @@
 - [x] Controller Emulation
   - [x] Windows
   - [x] Linux
-    - [ ] Cleanup
+     - [ ] Cleanup
 - [ ] Port logic from my unity prototype
   - [ ] Dynamic Grid Layout
   - [ ] Shifter
@@ -19,7 +19,7 @@
 
 ## Thanks
 
-- [ManyMouse](https://github.com/icculus/manymouse) for cross-platform global the mouse hook
+- [ManyMouse](https://github.com/icculus/manymouse) for cross-platform global mouse hook
 - [GrantEdwards](https://github.com/GrantEdwards/uinput-joystick-demo) & [Commander Rag](https://github.com/CommanderRag/xbox-controller-emulator-linux) for Linux UInput controller examples
 - [ViGEmBus](https://github.com/ViGEm/ViGEmBus) for windows controller emulation
 - SDL2 for SDL2
