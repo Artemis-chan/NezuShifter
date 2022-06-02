@@ -23,13 +23,13 @@ public:
     ~GearBox();
     SDL_Rect *activeGear() const;
 
-    void render(SDL_Renderer *rend);
+    void render(SDL_Renderer *rend) const;
 };
 
 
 class ShifterHandle {
 public:
-    bool enableSideLimits = true;
+    bool disableSideLimits = false;
     
     explicit ShifterHandle(GearBox* gearBox);
     void move(int &dX, int &dY, SDL_Window *window);

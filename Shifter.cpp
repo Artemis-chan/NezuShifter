@@ -13,14 +13,15 @@ void ShifterHandle::move(int &dX, int &dY, SDL_Window *window) {
     int nX = x + dX;
     int nY = y + dY;
 
-    if (enableSideLimits)
+    bool noGear = !checkGearBounds();
+    if (disableSideLimits)
     {
         int winH, winW;
         SDL_GetWindowSize(window, &winW, &winH);
         nX = std::clamp(nX, 0, winW);
         nY = std::clamp(nY, 0, winH);
     }
-    else if (!checkGearBounds())
+    else if (noGear)
         return;
     
     x = nX;
@@ -38,8 +39,18 @@ void ShifterHandle::render(SDL_Renderer* rend) const {
 }
 
 bool ShifterHandle::checkGearBounds() {
-    auto activeGear = gearBox->activeGear();
-    return true;
+    for (uint8_t i = 0, l = gearBox->length; i < l; ++i)
+    {
+        auto gear  = gearBox->gears[i];
+        if (gear.x <= x && x <= gear.x + gear.w &&
+            gear.y <= y && y <= gear.y + gear.h)
+        {
+            gearBox->activeGearId = i;
+            return true;
+        }
+    }
+    gearBox->activeGearId = -1;
+    return false;
 }
 
 #pragma endregion
@@ -49,13 +60,15 @@ bool ShifterHandle::checkGearBounds() {
 GearBox::GearBox(uint8_t gearsCnt) {
     gears = new SDL_Rect[gearsCnt];
     length = gearsCnt;
-    for (uint8_t i = 0, l = length; i < l; ++i)
+    for (uint8_t i = 0; i < length; ++i)
     {
         gears[i] = { i * 100, 0, 50, 50 };
     }
 }
 
 SDL_Rect *GearBox::activeGear() const {
+    if (activeGearId < 0 || activeGearId >= length)
+        return nullptr;
     return &gears[activeGearId];
 }
 
@@ -63,9 +76,12 @@ GearBox::~GearBox() {
     delete[] gears;
 }
 
-void GearBox::render(SDL_Renderer *rend) {
+void GearBox::render(SDL_Renderer *rend) const {
     SDL_SetRenderDrawColor(rend, INACTIVE_GEAR);
     SDL_RenderFillRects(rend, gears, length);
+
+    if (activeGearId < 0 || activeGearId >= length)
+        return;
     
     SDL_SetRenderDrawColor(rend, ACTIVE_GEAR);
     SDL_RenderFillRect(rend, activeGear());    

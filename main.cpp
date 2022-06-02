@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     GearBox gearBox(4);
     ShifterHandle handle(&gearBox);
     
-    handle.enableSideLimits = false;
+    handle.disableSideLimits = true;
 
     // Event loop
     while(!quit)
