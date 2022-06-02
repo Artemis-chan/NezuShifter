@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     );
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
     TTF_CloseFont(font);
@@ -34,7 +35,10 @@ int main(int argc, char *argv[]) {
     // Event loop exit flag
     bool quit = false;
     
-    ShifterHandle handle;
+    GearBox gearBox(4);
+    ShifterHandle handle(&gearBox);
+    
+    handle.enableSideLimits = false;
 
     // Event loop
     while(!quit)

@@ -3,35 +3,43 @@
 
 #include "SDL.h"
 
-#define ACTIVE_GEAR SDL_Color{ 10, 240, 10, 255 }
-#define INACTIVE_GEAR SDL_Color{ 240, 50, 10, 255 }
+#define ACTIVE_GEAR 10, 240, 10, 255
+#define INACTIVE_GEAR 240, 50, 10, 255
 
-class Gear {
-public:
-    uint8_t num;
-    SDL_Rect rect;
-    void render(bool active);
-};
+//class Gear {
+//public:
+//    uint8_t num;
+//    SDL_Rect rect;
+//    void render(bool active, SDL_Renderer *rend);
+//};
 
-class Shifter {
+class GearBox {
 public:
-    int activeGear = 0;
-    Gear *gears;
+    uint8_t activeGearId = 0;
+    uint8_t length;
+    SDL_Rect *gears;
     
-    explicit Shifter(int gearsCnt);
+    explicit GearBox(uint8_t gearsCnt);
+    ~GearBox();
+    SDL_Rect *activeGear() const;
+
+    void render(SDL_Renderer *rend);
 };
 
 
 class ShifterHandle {
 public:
+    bool enableSideLimits = true;
+    
+    explicit ShifterHandle(GearBox* gearBox);
     void move(int &dX, int &dY, SDL_Window *window);
     void render(SDL_Renderer* rend) const;
-    bool enableSideLimits = true;
+    
 private:
     //position
     int x = 0, y = 0;
     bool checkGearBounds();
-//    Shifter shifter;
+    GearBox *gearBox;
 };
 
 #endif //NEZUSHIFTER_SHIFTER_HPP
