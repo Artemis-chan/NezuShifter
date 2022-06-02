@@ -38,7 +38,7 @@ public:
 private:
     //position
     int x = 0, y = 0;
-    bool checkGearBounds();
+    bool checkGearBounds(int nX, int nY);
     GearBox *gearBox;
 };
 

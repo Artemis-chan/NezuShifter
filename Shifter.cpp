@@ -7,13 +7,14 @@
 
 ShifterHandle::ShifterHandle(GearBox *gearBox) {
     this->gearBox = gearBox;
+    
 }
 
 void ShifterHandle::move(int &dX, int &dY, SDL_Window *window) {
     int nX = x + dX;
     int nY = y + dY;
 
-    bool noGear = !checkGearBounds();
+    bool noGear = !checkGearBounds(nX, nY);
     if (disableSideLimits)
     {
         int winH, winW;
@@ -38,18 +39,17 @@ void ShifterHandle::render(SDL_Renderer* rend) const {
     SDL_RenderFillRect(rend, &rect);
 }
 
-bool ShifterHandle::checkGearBounds() {
+bool ShifterHandle::checkGearBounds(int nX, int nY) {
     for (uint8_t i = 0, l = gearBox->length; i < l; ++i)
     {
         auto gear  = gearBox->gears[i];
-        if (gear.x <= x && x <= gear.x + gear.w &&
-            gear.y <= y && y <= gear.y + gear.h)
+        if (gear.x <= nX && nX <= gear.x + gear.w &&
+            gear.y <= nY && nY <= gear.y + gear.h)
         {
             gearBox->activeGearId = i;
             return true;
         }
     }
-    gearBox->activeGearId = -1;
     return false;
 }
 
@@ -62,7 +62,7 @@ GearBox::GearBox(uint8_t gearsCnt) {
     length = gearsCnt;
     for (uint8_t i = 0; i < length; ++i)
     {
-        gears[i] = { i * 100, 0, 50, 50 };
+        gears[i] = { i * 50, 0, 50, 50 };
     }
 }
 
