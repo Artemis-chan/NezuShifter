@@ -11,10 +11,11 @@
 PVIGEM_CLIENT client;
 PVIGEM_TARGET pad;
 XINPUT_STATE state;
+XUSB_REPORT report;
 
 int controller_emu_init() {
     printf("starting vigem\n");
-    const auto client = vigem_alloc();
+    client = vigem_alloc();
 
     if (client == nullptr)
     {
@@ -31,7 +32,7 @@ int controller_emu_init() {
     //
     // Allocate handle to identify new pad
     //
-    const auto pad = vigem_target_x360_alloc();
+    pad = vigem_target_x360_alloc();
 
     //
     // Add client to the bus, this equals a plug-in event
@@ -58,5 +59,7 @@ void controller_emu_quit() {
 }
 
 void controller_emu_set_input(int button, bool value) {
+    WORD buttonMask = 1 << button;
+    value ? (state.Gamepad.wButtons |= buttonMask) : (state.Gamepad.wButtons &= ~buttonMask);
     vigem_target_x360_update(client, pad, *reinterpret_cast<XUSB_REPORT*>(&state.Gamepad));
 }
