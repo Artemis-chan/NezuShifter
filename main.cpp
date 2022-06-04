@@ -10,6 +10,7 @@
 #include "controller_emu/controller_emu.h"
 
 #include "Shifter.hpp"
+#include "Common.h"
 
 int main(int argc, char *argv[]) {
     //Init
@@ -21,9 +22,9 @@ int main(int argc, char *argv[]) {
             "SDL2Test",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
-            640,
-            480,
-            SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALWAYS_ON_TOP
+            WIDTH,
+            HEIGHT,
+            SDL_WINDOW_ALWAYS_ON_TOP | SDL_WINDOW_RESIZABLE
     );
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
@@ -39,6 +40,8 @@ int main(int argc, char *argv[]) {
     ShifterHandle handle(&gearBox);
     
     handle.disableSideLimits = true;
+    
+    bool bordered = true;
 
     // Event loop
     while(!quit)
@@ -48,31 +51,40 @@ int main(int argc, char *argv[]) {
         
         SDL_Event e;
 
-        // Wait indefinitely for the next available event
-        SDL_WaitEventTimeout(&e, 1);
+        // Wait for next event or 1 ms
+        SDL_WaitEventTimeout(&e, 2);
 
-        // User requests quit
-        if(e.type == SDL_QUIT)
-        {
-            quit = true;
-        }
-        
-
-        if (e.type == SDL_KEYDOWN) {
-            if (e.key.keysym.sym == SDLK_ESCAPE) {
+        switch (e.type) {
+            case SDL_QUIT:
                 quit = true;
-            }
-            if (e.key.keysym.sym == SDLK_a)
-            {
-                printf("Button pressed\n");
-                controller_emu_set_input(0, 0);
-            }
+                break;
+                
+            case SDL_WINDOWEVENT:
+                if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
+                    printf("resized\n");
+                    SDL_GetWindowSize(window, &WIDTH, &HEIGHT);
+                }
+                break;
+                
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = true;
+                }
+                else if (e.key.keysym.sym == SDLK_s)
+                {
+                    bordered = !bordered;
+                    SDL_SetWindowBordered(window, static_cast<SDL_bool>(bordered));
+                }
+                break;
+            
+            default:
+                break;
         }
 
         ManyMouseEvent evt;
         int x = 0, y = 0;
 
-        while (ManyMouse_PollEvent(&evt) != 0)
+        while (ManyMouse_PollEvent(&evt))
         {
             if (evt.type != MANYMOUSE_EVENT_RELMOTION)
                 continue;
