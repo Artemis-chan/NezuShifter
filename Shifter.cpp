@@ -46,7 +46,7 @@ bool ShifterHandle::checkGearBounds(int nX, int nY) {
         if (gear.x <= nX && nX <= gear.x + gear.w &&
             gear.y <= nY && nY <= gear.y + gear.h)
         {
-            gearBox->activeGearId = i;
+            gearBox->changeGear(i);
             return true;
         }
     }
@@ -58,9 +58,11 @@ bool ShifterHandle::checkGearBounds(int nX, int nY) {
 #pragma region GearBox
 
 GearBox::GearBox(uint8_t gearsCnt) {
-    gears = new SDL_Rect[gearsCnt];
-    length = gearsCnt;
-    for (uint8_t i = 0; i < length; ++i)
+    gears = new SDL_Rect[gearsCnt + 2];
+    length = gearsCnt + 2;
+    //neutral
+    gears[0] = { 0, 0, 0, 0 };
+    for (uint8_t i = 2; i < length; ++i)
     {
         gears[i] = { i * 50, 0, 50, 50 };
     }
@@ -85,6 +87,20 @@ void GearBox::render(SDL_Renderer *rend) const {
     
     SDL_SetRenderDrawColor(rend, ACTIVE_GEAR);
     SDL_RenderFillRect(rend, activeGear());    
+}
+
+void GearBox::changeGear(int i) {
+    if (activeGearId == i) return;
+    
+    printf("Gear changed from %i to %i\n", activeGearId, i);
+
+    if (activeGearId != 0)
+        controller_emu_set_input(activeGearId - 1, false);
+
+    activeGearId = i;
+
+    if(activeGearId != 0)
+        controller_emu_set_input(activeGearId - 1, true);
 }
 
 #pragma endregion
