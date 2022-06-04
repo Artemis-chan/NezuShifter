@@ -56,7 +56,6 @@ bool ShifterHandle::checkGearBounds(int nX, int nY) {
 #pragma region GearBox
 
 GearBox::GearBox(uint8_t gearsCnt, int &w, int &h) {
-    gearsCnt = 4;
     gears = new SDL_Rect[gearsCnt + 2];
     length = gearsCnt + 2;
     generate(w, h);
