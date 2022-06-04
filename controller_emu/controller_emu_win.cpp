@@ -18,10 +18,6 @@ WORD ButtonMap[] = {
     XINPUT_GAMEPAD_B,
     XINPUT_GAMEPAD_X,
     XINPUT_GAMEPAD_Y,
-    XINPUT_GAMEPAD_DPAD_UP,
-    XINPUT_GAMEPAD_DPAD_DOWN,
-    XINPUT_GAMEPAD_DPAD_LEFT,
-    XINPUT_GAMEPAD_DPAD_RIGHT,
     XINPUT_GAMEPAD_LEFT_SHOULDER,
     XINPUT_GAMEPAD_RIGHT_SHOULDER,
     XINPUT_GAMEPAD_START,
@@ -75,7 +71,7 @@ void controller_emu_quit() {
 }
 
 void controller_emu_set_input(int button, bool value) {
-    if(button < 0 || button > 13)
+    if(button < 0 || button > 9)
         return;
     
     WORD buttonMask = ButtonMap[button];   
