@@ -10,7 +10,6 @@
 #include "controller_emu/controller_emu.h"
 
 #include "Shifter.hpp"
-#include "Common.h"
 
 int main(int argc, char *argv[]) {
     //Init
@@ -18,12 +17,14 @@ int main(int argc, char *argv[]) {
     controller_emu_init();
     ManyMouse_Init();
 
+    int w = 480, h = 240;
+
     SDL_Window *window = SDL_CreateWindow(
             "SDL2Test",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
-            WIDTH,
-            HEIGHT,
+            w,
+            h,
             SDL_WINDOW_ALWAYS_ON_TOP | SDL_WINDOW_RESIZABLE
     );
 
@@ -36,7 +37,7 @@ int main(int argc, char *argv[]) {
     // Event loop exit flag
     bool quit = false;
     
-    GearBox gearBox(4);
+    GearBox gearBox(5, w, h);
     ShifterHandle handle(&gearBox);
     
     handle.disableSideLimits = true;
@@ -61,19 +62,14 @@ int main(int argc, char *argv[]) {
                 
             case SDL_WINDOWEVENT:
                 if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
-                    printf("resized\n");
-                    SDL_GetWindowSize(window, &WIDTH, &HEIGHT);
+                    SDL_GetWindowSize(window, &w, &h);
+                    gearBox.generate(w, h);
                 }
                 break;
                 
             case SDL_KEYDOWN:
                 if (e.key.keysym.sym == SDLK_ESCAPE) {
                     quit = true;
-                }
-                else if (e.key.keysym.sym == SDLK_s)
-                {
-                    bordered = !bordered;
-                    SDL_SetWindowBordered(window, static_cast<SDL_bool>(bordered));
                 }
                 break;
             
@@ -100,13 +96,13 @@ int main(int argc, char *argv[]) {
             }
         }
         
-        auto w = SDL_GetKeyboardFocus();
-        if(w == window && !bordered)
+        auto win = SDL_GetKeyboardFocus();
+        if(win == window && !bordered)
         {
             SDL_SetWindowBordered(window, SDL_TRUE);
             bordered = true;
         }
-        else if(w == nullptr && bordered)
+        else if(win == nullptr && bordered)
         {
             SDL_SetWindowBordered(window, SDL_FALSE);
             bordered = false;
@@ -114,7 +110,7 @@ int main(int argc, char *argv[]) {
 
         if (x || y)
         {            
-            handle.move(x, y, window);            
+            handle.move(x, y, w, h);            
         }
         
 

@@ -10,17 +10,15 @@ ShifterHandle::ShifterHandle(GearBox *gearBox) {
     
 }
 
-void ShifterHandle::move(int &dX, int &dY, SDL_Window *window) {
+void ShifterHandle::move(int &dX, int &dY, int &w, int &h) {
     int nX = x + dX;
     int nY = y + dY;
 
     bool noGear = !checkGearBounds(nX, nY);
     if (disableSideLimits)
     {
-        int winH, winW;
-        SDL_GetWindowSize(window, &winW, &winH);
-        nX = std::clamp(nX, 0, winW);
-        nY = std::clamp(nY, 0, winH);
+        nX = std::clamp(nX, 0, w);
+        nY = std::clamp(nY, 0, h);
     }
     else if (noGear)
         return;
@@ -57,15 +55,35 @@ bool ShifterHandle::checkGearBounds(int nX, int nY) {
 
 #pragma region GearBox
 
-GearBox::GearBox(uint8_t gearsCnt) {
+GearBox::GearBox(uint8_t gearsCnt, int &w, int &h) {
+    gearsCnt = 4;
     gears = new SDL_Rect[gearsCnt + 2];
     length = gearsCnt + 2;
+    generate(w, h);
+}
+
+void GearBox::generate(int &w, int &h) const
+{
+    const int spacing = w / 100;
+    const int dblSpacing = spacing * 2;
+
+    printf("resized to %i x %i\n", w, h);
+    int gearWidth = w / (length / 2) - dblSpacing;
+    int gearHeight = h / 3;
+    int bottomRow = gearHeight * 2;
+
     //neutral
-    gears[0] = { 0, 0, 0, 0 };
+    gears[0] = { 0, gearHeight, w, gearHeight };
+    
+    //main gears
     for (uint8_t i = 2; i < length; ++i)
     {
-        gears[i] = { i * 50, 0, 50, 50 };
+        uint8_t horIndex = (i / 2) - 1;
+        gears[i] = { horIndex * (gearWidth + dblSpacing) + spacing, i % 2 ? bottomRow : 0, gearWidth, gearHeight };
     }
+    
+    //reverse
+    gears[1] = {w - gearWidth - spacing, bottomRow, gearWidth, gearHeight };
 }
 
 SDL_Rect *GearBox::activeGear() const {

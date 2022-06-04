@@ -1,7 +1,0 @@
-﻿#ifndef NEZUSHIFTER_COMMON_H
-#define NEZUSHIFTER_COMMON_H
-
-static int HEIGHT = 240;
-static int WIDTH = 480;
-
-#endif //NEZUSHIFTER_COMMON_H
