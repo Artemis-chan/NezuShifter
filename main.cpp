@@ -99,7 +99,24 @@ int main(int argc, char *argv[]) {
                     break;
             }
         }
-        handle.move(x, y, window);
+        
+        auto w = SDL_GetKeyboardFocus();
+        if(w == window && !bordered)
+        {
+            SDL_SetWindowBordered(window, SDL_TRUE);
+            bordered = true;
+        }
+        else if(w == nullptr && bordered)
+        {
+            SDL_SetWindowBordered(window, SDL_FALSE);
+            bordered = false;
+        }
+
+        if (x || y)
+        {            
+            handle.move(x, y, window);            
+        }
+        
 
 //        printf("%i %i\n", x, y);
         //Render
