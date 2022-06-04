@@ -11,7 +11,23 @@
 PVIGEM_CLIENT client;
 PVIGEM_TARGET pad;
 XINPUT_STATE state;
-XUSB_REPORT report;
+
+WORD ButtonMap[] = {
+    XINPUT_GAMEPAD_RIGHT_THUMB,
+    XINPUT_GAMEPAD_A,
+    XINPUT_GAMEPAD_B,
+    XINPUT_GAMEPAD_X,
+    XINPUT_GAMEPAD_Y,
+    XINPUT_GAMEPAD_DPAD_UP,
+    XINPUT_GAMEPAD_DPAD_DOWN,
+    XINPUT_GAMEPAD_DPAD_LEFT,
+    XINPUT_GAMEPAD_DPAD_RIGHT,
+    XINPUT_GAMEPAD_LEFT_SHOULDER,
+    XINPUT_GAMEPAD_RIGHT_SHOULDER,
+    XINPUT_GAMEPAD_START,
+    XINPUT_GAMEPAD_BACK,
+    XINPUT_GAMEPAD_LEFT_THUMB
+};
 
 int controller_emu_init() {
     printf("starting vigem\n");
@@ -59,7 +75,10 @@ void controller_emu_quit() {
 }
 
 void controller_emu_set_input(int button, bool value) {
-    WORD buttonMask = 1 << button;
+    if(button < 0 || button > 13)
+        return;
+    
+    WORD buttonMask = ButtonMap[button];   
     value ? (state.Gamepad.wButtons |= buttonMask) : (state.Gamepad.wButtons &= ~buttonMask);
     vigem_target_x360_update(client, pad, *reinterpret_cast<XUSB_REPORT*>(&state.Gamepad));
 }
