@@ -61,8 +61,8 @@ void ShifterHandle::center(int deltaTicks) {
 //    std::cout << dtS << std::endl;
     dtS *= 10;
     
-    x = (abs(tX - x) > 10) ? (tX * dtS) + (x * (1.0 - dtS)) : tX;
-    y = (abs(tY - y) > 10) ? (tY * dtS) + (y * (1.0 - dtS)) : tY;
+    x = (abs(tX - x) > 6) ? (tX * dtS) + (x * (1.0 - dtS)) : tX;
+    y = (abs(tY - y) > 6) ? (tY * dtS) + (y * (1.0 - dtS)) : tY;
 }
 
 #pragma endregion
