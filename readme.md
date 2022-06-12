@@ -2,7 +2,7 @@
 
 **Emulating simracing shifters using your mouse!**
 
-## TODO[88%]
+## TODO[93%]
 
 - [x] [Create working prototype in unity (which is easy to port into C/CXX)](https://github.com/Artemis-chan/ShifterEmuPrototype)
 - [x] Cross-platform building workflow using CMake
@@ -11,12 +11,12 @@
 - [x] Controller Emulation
   - [x] Windows
   - [x] Linux
-    - [ ] Cleanup
+    - [x] Cleanup
 - [x] Port logic from my unity prototype
   - [x] Dynamic Grid Layout
-  - [ ] Shifter
+  - [x] Shifter
     - [x] Logic 
-    - [ ] Text Marks 
+    - [x] Text Marks 
 - [x] Map Buttons
 - [ ] Configuration
 - [ ] Icon, polish, etc.
