@@ -18,25 +18,22 @@
 
 class GearBox {
 public:
-    GearBox(uint8_t gearsCnt, int &w, int &h, SDL_Renderer *rend);
-
     uint8_t length;
     SDL_Rect *gears;
     SDL_Texture *gearIdText = nullptr;
     
-    explicit GearBox(uint8_t gearsCnt, int &w, int &h);
+    GearBox(uint8_t gearsCnt, int &w, int &h, SDL_Renderer *rend);
     ~GearBox();
     
     SDL_Rect *activeGear() const;
     void changeGear(int i);
     void render(SDL_Renderer *rend) const;
-    void generate(int &w, int &h) const;
     void generate(int &w, int &h, SDL_Renderer *rend);
     
 private:
     uint8_t activeGearId = 0;
     
-    const char* GetGearName(uint8_t id) const;
+    static const char* GetGearName(uint8_t id);
 };
 
 

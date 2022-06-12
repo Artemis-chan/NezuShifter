@@ -93,7 +93,7 @@ void GearBox::generate(int &w, int &h, SDL_Renderer * rend)
     for (uint8_t i = 0, l = length; i < l; ++i)
     {
         auto gear  = gears[i];
-        auto txt =  TTF_RenderText_Blended(font, std::to_string(i).c_str(), SDL_Color{0,0,0,0});
+        auto txt =  TTF_RenderText_Blended(font, GetGearName(i), SDL_Color{0,0,0,0});
         gear.x += gear.w/2 - 12;
         gear.y += gearHeight/2 - 12;
         SDL_BlitSurface(txt, nullptr, baseSurf, &gear);
@@ -144,7 +144,14 @@ void GearBox::changeGear(int i) {
 }
 
 const char *GearBox::GetGearName(uint8_t id) {
-    return nullptr;
+    switch (id) {
+        case 0:
+            return "N";
+        case 1:
+            return "R";
+        default:
+            return std::to_string(id - 1).c_str();
+    }
 }
 
 #pragma endregion
