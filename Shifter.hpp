@@ -44,7 +44,9 @@ public:
     explicit ShifterHandle(GearBox* gearBox);
     void move(int &dX, int &dY, int &w, int &h);
     void render(SDL_Renderer* rend) const;
-    
+    void center(int deltaTicks);
+
+
 private:
     //position
     int x = 0, y = 0;

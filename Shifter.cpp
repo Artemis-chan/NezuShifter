@@ -53,6 +53,18 @@ bool ShifterHandle::checkGearBounds(int nX, int nY) {
     return false;
 }
 
+void ShifterHandle::center(int deltaTicks) {
+    auto currentGear = gearBox->activeGear();
+    int tX = currentGear->x + currentGear->w / 2;
+    int tY = currentGear->y + currentGear->h / 2;
+    double dtS = deltaTicks / 1000.0;
+//    std::cout << dtS << std::endl;
+    dtS *= 10;
+    
+    x = (abs(tX - x) > 10) ? (tX * dtS) + (x * (1.0 - dtS)) : tX;
+    y = (abs(tY - y) > 10) ? (tY * dtS) + (y * (1.0 - dtS)) : tY;
+}
+
 #pragma endregion
 
 #pragma region GearBox

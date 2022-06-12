@@ -1,5 +1,6 @@
 ﻿#include <stdio.h>
 #include <inttypes.h>
+#include <time.h>
 #include <iostream>
 
 #define SDL_MAIN_HANDLED
@@ -10,6 +11,8 @@
 #include "controller_emu/controller_emu.h"
 
 #include "Shifter.hpp"
+
+#define RETURN_TIME 300
 
 int main(int argc, char *argv[]) {
     //Init
@@ -45,6 +48,8 @@ int main(int argc, char *argv[]) {
     bool bordered = true;
     
     bool enabled = false;
+    Uint32 lastTime = SDL_GetTicks();
+    Uint32 returnTime = lastTime + RETURN_TIME;
 
     // Event loop
     while(!quit)
@@ -54,9 +59,10 @@ int main(int argc, char *argv[]) {
         
         SDL_Event e;
 
-        // Wait for next event or 1 ms
+        // Wait for next event or wait a tiny time
         SDL_WaitEventTimeout(&e, 2);
-
+        auto curTime = SDL_GetTicks();
+        
         switch (e.type) {
             case SDL_QUIT:
                 quit = true;
@@ -116,8 +122,15 @@ int main(int argc, char *argv[]) {
         }
 
         if (enabled && (x || y))
-            handle.move(x, y, w, h);            
-//            continue;
+        {
+            handle.move(x, y, w, h);
+            returnTime = curTime + RETURN_TIME;
+        }
+
+        if (!SDL_TICKS_PASSED(returnTime, curTime))
+        {
+            handle.center(curTime - lastTime);
+        }
 
 //        printf("%i %i\n", x, y);
 
@@ -126,6 +139,7 @@ int main(int argc, char *argv[]) {
         handle.render(renderer);
         SDL_RenderPresent(renderer);
         
+        lastTime = curTime;        
     }
     
     //Disposal
