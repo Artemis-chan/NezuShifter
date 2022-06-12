@@ -7,7 +7,9 @@
 
 ShifterHandle::ShifterHandle(GearBox *gearBox) {
     this->gearBox = gearBox;
-    
+    auto ngear = &gearBox->gears[0];
+    x = ngear->x + ngear->w/2;
+    y = ngear->y + ngear->h/2;
 }
 
 void ShifterHandle::move(int &dX, int &dY, int &w, int &h) {
@@ -132,6 +134,7 @@ void GearBox::render(SDL_Renderer *rend) const {
 void GearBox::changeGear(int i) {
     if (activeGearId == i) return;
     
+//    std::cout << std::endl;
     printf("Gear changed from %i to %i\n", activeGearId, i);
 
     if (activeGearId != 0)

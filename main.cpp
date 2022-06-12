@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     controller_emu_init();
     ManyMouse_Init();
 
-    int w = 480, h = 240;
+    int w = 240, h = 240;
 
     SDL_Window *window = SDL_CreateWindow(
             "SDL2Test",
@@ -40,9 +40,11 @@ int main(int argc, char *argv[]) {
     GearBox gearBox(7, w, h, renderer);
     ShifterHandle handle(&gearBox);
     
-    handle.disableSideLimits = true;
+    handle.disableSideLimits = false;
     
     bool bordered = true;
+    
+    bool enabled = false;
 
     // Event loop
     while(!quit)
@@ -72,7 +74,7 @@ int main(int argc, char *argv[]) {
                     quit = true;
                 }
                 break;
-            
+
             default:
                 break;
         }
@@ -83,7 +85,12 @@ int main(int argc, char *argv[]) {
         while (ManyMouse_PollEvent(&evt))
         {
             if (evt.type != MANYMOUSE_EVENT_RELMOTION)
-                continue;
+            {
+                if (evt.type != MANYMOUSE_EVENT_BUTTON)
+                    continue;
+                if(evt.item == 3 && evt.value)
+                    enabled = !enabled;
+            }
 
             switch (evt.item)
             {
@@ -108,7 +115,7 @@ int main(int argc, char *argv[]) {
             bordered = false;
         }
 
-        if ((x || y))
+        if (enabled && (x || y))
             handle.move(x, y, w, h);            
 //            continue;
 
