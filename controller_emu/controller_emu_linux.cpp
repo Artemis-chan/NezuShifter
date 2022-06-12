@@ -65,29 +65,19 @@ int controller_emu_init() {
     ioctl(gamepad_fd, UI_SET_EVBIT, EV_KEY); // setting Gamepad keys
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_A);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_B);
+    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_C);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_X);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_Y);
+    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_Z);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_TL);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_TR);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_TL2);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_TR2);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_START);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_SELECT);
+    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_MODE);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_THUMBL);
     ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_THUMBR);
-    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_DPAD_UP);
-    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_DPAD_DOWN);
-    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_DPAD_LEFT);
-    ioctl(gamepad_fd, UI_SET_KEYBIT, BTN_DPAD_RIGHT);
-
-    ioctl(gamepad_fd, UI_SET_EVBIT, EV_ABS); // setting Gamepad thumbsticks
-    ioctl(gamepad_fd, UI_SET_ABSBIT, ABS_X);
-    ioctl(gamepad_fd, UI_SET_ABSBIT, ABS_Y);
-    ioctl(gamepad_fd, UI_SET_ABSBIT, ABS_RX);
-    ioctl(gamepad_fd, UI_SET_ABSBIT, ABS_RY);
-    ioctl(gamepad_fd, UI_SET_ABSBIT, ABS_TILT_X);
-    ioctl(gamepad_fd, UI_SET_ABSBIT, ABS_TILT_Y);
-
 
     struct uinput_user_dev uidev;
 
@@ -97,23 +87,7 @@ int controller_emu_init() {
     uidev.id.vendor = 0x3;
     uidev.id.product = 0x3;
     uidev.id.version = 2;
-    uidev.absmax[ABS_X] = 32767; // Parameters of thumbsticks
-    uidev.absmin[ABS_X] = -32768;
-    uidev.absfuzz[ABS_X] = 0;
-    uidev.absflat[ABS_X] = 15;
-    uidev.absmax[ABS_Y] = 32767;
-    uidev.absmin[ABS_Y] = -32768;
-    uidev.absfuzz[ABS_Y] = 0;
-    uidev.absflat[ABS_Y] = 15;
-    uidev.absmax[ABS_RX] = 512;
-    uidev.absmin[ABS_RX] = -512;
-    uidev.absfuzz[ABS_RX] = 0;
-    uidev.absflat[ABS_RX] = 16;
-    uidev.absmax[ABS_RY] = 512;
-    uidev.absmin[ABS_RY] = -512;
-    uidev.absfuzz[ABS_RY] = 0;
-    uidev.absflat[ABS_RY] = 16;
-
+    
     if (write(gamepad_fd, &uidev, sizeof(uidev)) < 0)
     {
         printf("Failed to write! \n");
