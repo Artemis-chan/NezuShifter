@@ -1,6 +1,6 @@
 ﻿#include <stdio.h>
 #include <inttypes.h>
-
+#include <iostream>
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
@@ -31,13 +31,13 @@ int main(int argc, char *argv[]) {
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
+    TTF_Init();
     TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
-    TTF_CloseFont(font);
 
     // Event loop exit flag
     bool quit = false;
     
-    GearBox gearBox(7, w, h);
+    GearBox gearBox(7, w, h, renderer);
     ShifterHandle handle(&gearBox);
     
     handle.disableSideLimits = true;
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
             case SDL_WINDOWEVENT:
                 if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
                     SDL_GetWindowSize(window, &w, &h);
-                    gearBox.generate(w, h);
+                    gearBox.generate(w, h, renderer);
                 }
                 break;
                 
@@ -108,23 +108,26 @@ int main(int argc, char *argv[]) {
             bordered = false;
         }
 
-        if (x || y)
-        {            
+        if ((x || y))
             handle.move(x, y, w, h);            
-        }
-        
+//            continue;
 
 //        printf("%i %i\n", x, y);
-        //Render
-        handle.render(renderer);
 
+        //Render
+
+        handle.render(renderer);
         SDL_RenderPresent(renderer);
+        
     }
     
     //Disposal
     ManyMouse_Quit();
     controller_emu_quit();
 
+    TTF_CloseFont(font);
+    TTF_Quit();
+    
     SDL_DestroyWindow(window);
     SDL_Quit();
 

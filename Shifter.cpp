@@ -55,13 +55,13 @@ bool ShifterHandle::checkGearBounds(int nX, int nY) {
 
 #pragma region GearBox
 
-GearBox::GearBox(uint8_t gearsCnt, int &w, int &h) {
+GearBox::GearBox(uint8_t gearsCnt, int &w, int &h, SDL_Renderer * rend) {
     gears = new SDL_Rect[gearsCnt + 2];
     length = gearsCnt + 2;
-    generate(w, h);
+    generate(w, h, rend);
 }
 
-void GearBox::generate(int &w, int &h) const
+void GearBox::generate(int &w, int &h, SDL_Renderer * rend)
 {
     const int spacing = w / 100;
     const int dblSpacing = spacing * 2;
@@ -83,6 +83,26 @@ void GearBox::generate(int &w, int &h) const
     
     //reverse
     gears[1] = {w - gearWidth - spacing, bottomRow, gearWidth, gearHeight };
+
+    if (gearIdText != nullptr)
+        SDL_DestroyTexture(gearIdText);
+    
+    TTF_Font *font = TTF_OpenFont("Arial.ttf", 24);
+    
+    auto baseSurf = SDL_CreateRGBSurfaceWithFormat(0, w, h, 0, SDL_PIXELFORMAT_ARGB32);
+    for (uint8_t i = 0, l = length; i < l; ++i)
+    {
+        auto gear  = gears[i];
+        auto txt =  TTF_RenderText_Blended(font, std::to_string(i).c_str(), SDL_Color{0,0,0,0});
+        gear.x += gear.w/2 - 12;
+        gear.y += gearHeight/2 - 12;
+        SDL_BlitSurface(txt, nullptr, baseSurf, &gear);
+        SDL_FreeSurface(txt);
+    }
+
+    gearIdText = SDL_CreateTextureFromSurface(rend, baseSurf);
+    SDL_FreeSurface(baseSurf);
+    TTF_CloseFont(font);
 }
 
 SDL_Rect *GearBox::activeGear() const {
@@ -93,6 +113,7 @@ SDL_Rect *GearBox::activeGear() const {
 
 GearBox::~GearBox() {
     delete[] gears;
+    SDL_DestroyTexture(gearIdText);
 }
 
 void GearBox::render(SDL_Renderer *rend) const {
@@ -103,7 +124,9 @@ void GearBox::render(SDL_Renderer *rend) const {
         return;
     
     SDL_SetRenderDrawColor(rend, ACTIVE_GEAR);
-    SDL_RenderFillRect(rend, activeGear());    
+    SDL_RenderFillRect(rend, activeGear());
+
+    SDL_RenderCopy(rend, gearIdText, nullptr, nullptr);
 }
 
 void GearBox::changeGear(int i) {
@@ -118,6 +141,10 @@ void GearBox::changeGear(int i) {
 
     if(activeGearId != 0)
         controller_emu_set_input(activeGearId - 1, true);
+}
+
+const char *GearBox::GetGearName(uint8_t id) {
+    return nullptr;
 }
 
 #pragma endregion
