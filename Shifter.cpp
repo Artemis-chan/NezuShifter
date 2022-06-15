@@ -81,7 +81,8 @@ void GearBox::generate(int &w, int &h, SDL_Renderer * rend)
     const int dblSpacing = spacing * 2;
 
     printf("resized to %i x %i\n", w, h);
-    int gearWidth = w / (length / 2) - dblSpacing;
+    int offset = (w / (length / 2) - dblSpacing) / 2;
+    int gearWidth = (w - offset) / (length / 2) - dblSpacing;
     int gearHeight = h / 3;
     int bottomRow = gearHeight * 2;
 
@@ -92,7 +93,7 @@ void GearBox::generate(int &w, int &h, SDL_Renderer * rend)
     for (uint8_t i = 2; i < length; ++i)
     {
         uint8_t horIndex = (i / 2) - 1;
-        gears[i] = { horIndex * (gearWidth + dblSpacing) + spacing, i % 2 ? bottomRow : 0, gearWidth, gearHeight };
+        gears[i] = { horIndex * (gearWidth + dblSpacing) + spacing + (i % 2 ? offset : 0), i % 2 ? bottomRow : 0, gearWidth, gearHeight };
     }
     
     //reverse
