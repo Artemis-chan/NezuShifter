@@ -16,14 +16,24 @@ void ShifterHandle::move(int &dX, int &dY, int &w, int &h) {
     int nX = x + dX;
     int nY = y + dY;
 
-    bool noGear = !checkGearBounds(nX, nY);
+    bool gear = checkGearBounds(nX, nY);
+    
     if (disableSideLimits)
     {
         nX = std::clamp(nX, 0, w);
         nY = std::clamp(nY, 0, h);
     }
-    else if (noGear)
+    else if (!gear) {
+        if (checkGearBounds(x, nY)) {
+            y = nY;
+            return;
+        }
+        if (checkGearBounds(nX, y)) {
+            x = nX;
+            return;
+        }
         return;
+    }
     
     x = nX;
     y = nY;
