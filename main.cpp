@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     int w = 240, h = 240;
 
     SDL_Window *window = SDL_CreateWindow(
-            "SDL2Test",
+            "NezuShifter",
             SDL_WINDOWPOS_UNDEFINED,
             SDL_WINDOWPOS_UNDEFINED,
             w,
