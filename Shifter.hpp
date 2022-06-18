@@ -6,8 +6,8 @@
 
 #include "controller_emu/controller_emu.h"
 
-#define ACTIVE_GEAR 10, 240, 10, 255
-#define INACTIVE_GEAR 240, 50, 10, 255
+#define ACTIVE_GEAR 30, 180, 70, 255
+#define INACTIVE_GEAR 250, 70, 130, 255
 
 //class Gear {
 //public:
