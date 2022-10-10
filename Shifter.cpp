@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <algorithm>
+#include <string>
 
 #include "Shifter.hpp"
 
@@ -87,7 +88,7 @@ GearBox::GearBox(uint8_t gearsCnt, int &w, int &h, SDL_Renderer * rend) {
 
 void GearBox::generate(int &w, int &h, SDL_Renderer * rend)
 {
-    const int spacing = w / 100 * 4;
+    const int spacing = w / 100 * 2;
     const int dblSpacing = spacing * 2;
 
     printf("resized to %i x %i\n", w, h);

@@ -31,6 +31,7 @@ if(WIN32)
     FetchContent_Declare(
             ViGEmClient
             GIT_REPOSITORY https://github.com/ViGEm/ViGEmClient
+            GIT_TAG d0b32cfe14db337a071c54ff38451ec2caa4f251
     )
     FetchContent_MakeAvailable(ViGEmClient)
 endif()
