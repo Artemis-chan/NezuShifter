@@ -5,12 +5,12 @@
 #include <fcntl.h>
 #include <linux/input.h>
 #include <linux/uinput.h>
+#include "linux/input-event-codes.h"
 #include <time.h>
 #include <errno.h>
 #include <stdint.h>
 #include <unistd.h>
 #include <signal.h>
-#include "keys.h"
 
 bool q_pressed = false;
 
